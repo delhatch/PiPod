@@ -111,7 +111,7 @@ while not done:
         if event.type  == displayUpdate:
             status = PiPod.getStatus()         # Reads battery voltage, gets "status[2]" = backlight on/off
             songMetadata = music.getStatus()   # Get song length, how far in, song info, vol, playlist
-            view.update(status, menu.menuDict, songMetadata) # Writes to frame buffer
+            view.update(status, menu.menuDict, songMetadata) # Creates the screen and writes to frame buffer
             view.refresh()
         # The next line gets executed every time we check for an event on the que, no matter the event.
         pass

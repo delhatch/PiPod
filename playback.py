@@ -12,7 +12,7 @@ class music():
     UseMeta = False  # If False, use MP3 filename as the source of title/artist metadata.
                      # If True,  use the metadata inside the MP3 file.
     volume = 60
-    playlist = [["", "", "", ""]]
+    playlist = [["", "", "", "", ""]]
     currentSongIndex = 0
     flagEQ = False
     AlbumNoKey = 0
@@ -21,6 +21,8 @@ class music():
     ArtistEmptyField = 0
     TitleNoKey = 0
     TitleEmptyField = 0
+    GenreNoKey = 0
+    GenreEmptyField = 0
 
     def __init__(self):
         self.vlcInstance = vlc.Instance('--no-video')
@@ -75,7 +77,7 @@ class music():
         self.play()
 
     def updateList(self, newList):
-        if self.playlist[0] == ["", "", "", ""]:
+        if self.playlist[0] == ["", "", "", "", ""]:
             self.playlist.pop(0)
             self.playlist = newList
             self.currentSongIndex = 0
@@ -109,7 +111,7 @@ class music():
         self.playlist = self.playlist[:self.currentSongIndex + 1] + tempPlaylist
 
     def clearQueue(self):
-        self.playlist = [["", "", "", ""]]
+        self.playlist = [["", "", "", "", ""]]
         self.currentSongIndex = 0
         self.player.stop()
 
@@ -155,7 +157,7 @@ class music():
             song = audiofile.tags
             if self.UseMeta:  # Metadata source = metadata in the MP3 file.
                 # Check to see if the "ARTIST" field is empty, or does not exist.
-                #    If so, fill it in with "Not Sure"
+                #    If does not exist, fill it in with "Not Sure"
                 if( 'ARTIST' in song ):
                     if( song['ARTIST'] == [] ):  # Key exists, but points to empty field.
                         self.ArtistEmptyField += 1
@@ -167,7 +169,6 @@ class music():
                     song['ARTIST'] = ['Not Sure ARTIST']   # Found 26 of these
 
                 # Check to see if the "TITLE" field is empty, or does not exist.
-                #    If so, fill it in with "Not Sure"
                 if( 'TITLE' in song ):
                     if( song['TITLE'] == [] ):  # Key exists, but points to empty field.
                         self.TitleEmptyField += 1
@@ -197,7 +198,6 @@ class music():
                 song['TITLE'] = [stringTitle]
 
             # Check to see if the "ALBUM" field is empty, or does not exist.
-            #    If so, fill it in with "Not Sure"
             if( 'ALBUM' in song ):
                 if( song['ALBUM'] == [] ):  # Key exists, but points to empty field.
                     self.AlbumEmptyField += 1
@@ -208,21 +208,35 @@ class music():
                 self.AlbumNoKey += 1
                 song['ALBUM'] = ['Not Sure ALBUM']   # Found 174 of these
 
+            # Check to see if the "GENRE" field is empty, or does not exist.
+            if( 'GENRE' in song ):
+                if( song['GENRE'] == [] ):  # Key exists, but points to empty field.
+                    self.GenreEmptyField += 1
+                    song['GENRE'] = ['NOT SURE GENRE']  # Found ? of these
+                else:
+                    pass  # Genre field was filled in. Is legit.
+            else:
+                self.GenreNoKey += 1
+                song['GENRE'] = ['Not Sure GENRE']   # Found ? of these
+
             # At this point, the following writer call should never fail.
             try:
-                writer.writerow((i, song["ARTIST"][0], song["ALBUM"][0], song["TITLE"][0]))
+                writer.writerow((i, song["ARTIST"][0], song["ALBUM"][0], song["TITLE"][0], song["GENRE"][0]))
             except:
                 print("Unknown write error",i)
                 try:
                     print(song["ARTIST"])
                     print(song["ALBUM"])
                     print(song["TITLE"])
+                    print(song["GENRE"])
                 except:
                     pass
         file.close()
         print("Done writing metadata file.")
         print("AlbumNoKey = ", self.AlbumNoKey)
         print("AlbumEmptyField = ", self.AlbumEmptyField)
+        print("GenreNoKey = ", self.GenreNoKey)
+        print("GenreEmptyField = ", self.GenreEmptyField)
         if self.UseMeta:
             print("ArtistNoKey = ", self.ArtistNoKey)
             print("ArtistEmptyField = ", self.ArtistEmptyField)

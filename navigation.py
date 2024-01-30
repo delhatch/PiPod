@@ -3,7 +3,7 @@ import csv
 class menu():
     menuDict = {
         "selectedItem": 0,
-        "Main": ["Songs", "Albums","Artists","Genre","Play Mode","Settings"],
+        "Main": ["Songs", "Albums","Artists","Genres","Play Mode","Settings"],
         "Songs": [],
         "Artists": [],
         "Albums": [],
@@ -124,24 +124,30 @@ class menu():
         self.menuDict["Artists"] = []
         self.menuDict["Albums"] = []
         self.menuDict["Songs"] = []
+        self.menuDict["Genres"] = []
         metadata = []
         try:
             reader = csv.reader(file)
             for row in reader:
                 artistClear = row[1].lstrip().lower().title()
                 albumClear = row[2].lstrip().lower().title()
+                genreClear = row[4].lstrip().lower().title()
                 if artistClear is not "":
                     if artistClear not in self.menuDict["Artists"]:
                         self.menuDict["Artists"].append(artistClear)
                 if albumClear is not "":
                     if albumClear not in self.menuDict["Albums"]:
                         self.menuDict["Albums"].append(albumClear)
+                if genreClear is not "":
+                    if genreClear not in self.menuDict["Genres"]:
+                        self.menuDict["Genres"].append(genreClear)
                 if row[3].lstrip() is not "":
                     metadata.append(
-                        [row[0], artistClear, albumClear, row[3].lstrip()])  # [filename, artist, album, title]
+                        [row[0], artistClear, albumClear, row[3].lstrip(), genreClear])  # [filename, artist, album, title, genre]
         finally:
             file.close()
 
         self.menuDict["Artists"].sort()
         self.menuDict["Albums"].sort()
+        self.menuDict["Genres"].sort()
         self.menuDict["Songs"] = sorted(metadata, key=lambda meta: meta[3])

@@ -101,9 +101,12 @@ class view():
             artist = self.font.render(currentSong[1], True, primaryColor)
             album = self.font.render(currentSong[2], True, primaryColor)
             title = self.font.render(currentSong[3], True, primaryColor)
-            self.lcd.blit(artist, (10, 30))
-            self.lcd.blit(album, (10, 51))
-            self.lcd.blit(title, (10, 72))
+            genre = self.font.render(currentSong[4], True, primaryColor)
+            #print(currentSong[4])
+            self.lcd.blit(title, (10, 30))
+            self.lcd.blit(artist, (10, 51))
+            #self.lcd.blit(album, (10, 72))
+            #self.lcd.blit(genre, (10, 93))
 
         # Time bar
         pygame.draw.rect(self.lcd, primaryColor, (10, self.dispHeight - 18, self.dispWidth - 20, 15), 1)
