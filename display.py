@@ -33,7 +33,7 @@ class view():
                 songMetadata["songLength"],
                 songMetadata["volume"]
             )
-        elif menuDict["current"] == "Tracks":
+        elif menuDict["current"] == "Songs":
             self.listView(list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
         elif menuDict["current"] == "Queue":
             self.listView(["Clear queue"] + list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])

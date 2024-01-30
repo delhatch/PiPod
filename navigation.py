@@ -3,16 +3,15 @@ import csv
 class menu():
     menuDict = {
         "selectedItem": 0,
-        "Main": ["Music", "Settings"],  # ["Music", "Scripts", "Settings"]
-        "Music": ["Artists", "Albums", "Tracks", "Queue"],
-        "Scripts": [],
+        "Main": ["Songs", "Albums","Artists","Genre","Play Mode","Settings"],
+        "Songs": [],
         "Artists": [],
         "Albums": [],
-        "Tracks": [],
-        "list": [],
-        "Queue": [],
+        "Genres": [],
+        "Play Mode":["Normal","Shuffle","Repeat 1 Song"],
         "Settings": ["Turn EQ On","Turn EQ Off","Sleep", "Shutdown", "Reboot", "Update library"],
         "current": "musicController",
+        "Queue": [],
         "history": [],
     }
 
@@ -41,14 +40,14 @@ class menu():
         return None
 
     def right(self):
-        if self.menuDict["current"] == "list" or self.menuDict["current"] == "Tracks":  # move selected item to queue
+        if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move selected item to queue
             self.menuDict["Queue"].append(menu[menu["current"]][self.menuDict["selectedItem"]])
         elif self.menuDict["current"] == "Artists":  # move selected artist to queue
-            for item in self.menuDict["Tracks"]:
+            for item in self.menuDict["Songs"]:
                 if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
                     self.menuDict["Queue"].append(item)
         elif self.menuDict["current"] == "Albums":  # move selected album to queue
-            for item in self.menuDict["Tracks"]:
+            for item in self.menuDict["Songs"]:
                 if item[2] == self.menuDict["Albums"][self.menuDict["selectedItem"]]:
                     self.menuDict["Queue"].append(item)
 
@@ -63,7 +62,7 @@ class menu():
     def select(self):
         if self.menuDict["current"] == "Artists":
             tempList = []
-            for item in self.menuDict["Tracks"]:
+            for item in self.menuDict["Songs"]:
                 if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
                     tempList.append(item)
             self.menuDict["list"] = tempList
@@ -72,7 +71,7 @@ class menu():
 
         elif self.menuDict["current"] == "Albums":
             tempList = []
-            for item in self.menuDict["Tracks"]:
+            for item in self.menuDict["Songs"]:
                 if item[2] == self.menuDict["Albums"][self.menuDict["selectedItem"]]:
                     tempList.append(item)
             self.menuDict["list"] = tempList
@@ -83,7 +82,8 @@ class menu():
             if self.menuDict["Queue"]:
                 return "playAtIndex"
 
-        elif self.menuDict["current"] == "list" or self.menuDict["current"] == "Tracks":
+        elif self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":
+            print("Got here.")
             if self.menuDict["Queue"]:
                 for item in list(self.menuDict[self.menuDict["current"]]):
                     if item not in self.menuDict["Queue"]:
@@ -91,7 +91,7 @@ class menu():
             else:
                 self.menuDict["Queue"] = list(
                     self.menuDict[self.menuDict["current"]])  # copy the list where the song is selected to the queue
-
+                print("Put Songs on the que.")
                 return "play"
             self.menuDict["Queue"].remove(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Remove selected
             self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Put selected at first position
@@ -114,6 +114,7 @@ class menu():
             if self.menuDict[self.menuDict["current"]]:  # check if empty
                 self.menuDict["history"].append(self.menuDict["current"])  # update history
                 self.menuDict["current"] = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]  # go to next menu
+                #print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
 
         return None
@@ -122,7 +123,7 @@ class menu():
         file = open("info.csv", "rt")
         self.menuDict["Artists"] = []
         self.menuDict["Albums"] = []
-        self.menuDict["Tracks"] = []
+        self.menuDict["Songs"] = []
         metadata = []
         try:
             reader = csv.reader(file)
@@ -143,4 +144,4 @@ class menu():
 
         self.menuDict["Artists"].sort()
         self.menuDict["Albums"].sort()
-        self.menuDict["Tracks"] = sorted(metadata, key=lambda meta: meta[3])
+        self.menuDict["Songs"] = sorted(metadata, key=lambda meta: meta[3])
