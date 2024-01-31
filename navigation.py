@@ -22,19 +22,7 @@ class menu():
     def __init__(self):
         pass
 
-    def up(self):
-        if self.menuDict["selectedItem"] > 0:
-            self.menuDict["selectedItem"] -= 1
-        return None
-
-    def down(self):
-        if self.menuDict["current"] == "Queue" and self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]):
-            self.menuDict["selectedItem"] += 10
-        elif self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]) - 1:
-            self.menuDict["selectedItem"] += 10
-        return None
-
-    def left(self):
+    def escape(self):
         self.menuDict["selectedItem"] = 0
         if self.menuDict["history"]:  # check if history is empty
             self.menuDict["current"] = self.menuDict["history"][-1::][0]
@@ -42,6 +30,48 @@ class menu():
         else:
             self.menuDict["current"] = "musicController"
         return None
+
+    def up(self):
+        if self.menuDict["selectedItem"] > 0:
+            self.menuDict["selectedItem"] -= 1
+        return None
+
+    def down(self):
+        if self.menuDict["current"] == "Queue" and self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]):
+            self.menuDict["selectedItem"] += 1
+        elif self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]) - 1:
+            self.menuDict["selectedItem"] += 1
+        return None
+
+    def left(self):
+        print("Left. Screen =", self.menuDict["current"])
+        if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move to previous letter in the alphabet
+            #self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+            songInfo = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            #songTitle = songInfo[3]
+            # Get first letter of selected song.
+            firstL = songInfo[3][0]
+            # Now scan up until find a song who's first letter is smaller than this one. Save that letter.
+            if (firstL in alphaList) and (firstL != 'A') and (self.menuDict["selectedItem"] != 0):
+                nextL = chr(ord(firstL) - 1)
+                #print("Want to find first song in list that starts with the letter", nextL)
+                # Find index of the first song that starts with a letter LESS THAN this one
+                index = self.menuDict["selectedItem"]
+                index -= 1
+                nextSong = self.menuDict[self.menuDict["current"]][index]
+                nextSongFirstL = nextSong[3][0]
+                while( nextSongFirstL >= nextL ):
+                    index -= 1
+                    nextSong = self.menuDict[self.menuDict["current"]][index]
+                    nextSongFirstL = nextSong[3][0]
+                #print("Out of first loop at song",nextSong)
+                self.menuDict["selectedItem"] = index + 1
+            else:
+                # Selected song title did not start with a letter in B-Z. So just go to top of list.
+                self.menuDict["selectedItem"] = 0
+        else:
+            self.escape()
+        return "updateList"
 
     def right(self):
         print("Right. Screen =", self.menuDict["current"])
@@ -54,18 +84,18 @@ class menu():
             # Increment to next letter.
             if (firstL in alphaList) and (firstL != 'Z'):
                 nextL = chr(ord(firstL) + 1)
-                print("NextL =", nextL)
-                # Find index of the first song that starts with that letter.
+                #print("NextL =", nextL)
+                # Find index of the first song that starts with that letter, or greater.
                 index = self.menuDict["selectedItem"]
                 index += 1
                 nextSong = self.menuDict[self.menuDict["current"]][index]
                 nextSongFirstL = nextSong[3][0]
-                while( nextSongFirstL != nextL ):
+                while( nextSongFirstL <= firstL ):
                     index += 1
                     nextSong = self.menuDict[self.menuDict["current"]][index]
                     nextSongFirstL = nextSong[3][0]
                 self.menuDict["selectedItem"] = index
-            else:
+            elif ( firstL != 'Z'):
                 # Selected song title did not start with a letter in A-Z. So just go to first 'A' song.
                 index = self.menuDict["selectedItem"]
                 index += 1

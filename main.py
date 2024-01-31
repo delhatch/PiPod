@@ -35,7 +35,10 @@ while not done:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                PiPod.toggleSleep()
+                if menu.menuDict["current"] == "musicController":
+                    PiPod.toggleSleep()
+                else:
+                    action = menu.escape()
 
             elif event.key == pygame.K_u:
                 music.volumeUp()
