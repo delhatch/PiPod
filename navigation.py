@@ -41,12 +41,13 @@ class menu():
 
     def right(self):
         if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move selected item to queue
-            self.menuDict["Queue"].append(menu[menu["current"]][self.menuDict["selectedItem"]])
-        elif self.menuDict["current"] == "Artists":  # move selected artist to queue
+            self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+        elif self.menuDict["current"] == "Artists":  # move songs by the selected artist to queue
             for item in self.menuDict["Songs"]:
                 if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
+                    print("Found a match for the artist!")
                     self.menuDict["Queue"].append(item)
-        elif self.menuDict["current"] == "Albums":  # move selected album to queue
+        elif self.menuDict["current"] == "Albums":  # move songs on the selected album to queue
             for item in self.menuDict["Songs"]:
                 if item[2] == self.menuDict["Albums"][self.menuDict["selectedItem"]]:
                     self.menuDict["Queue"].append(item)
@@ -83,15 +84,15 @@ class menu():
                 return "playAtIndex"
 
         elif self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":
-            print("Got here.")
+            print("Got here. Current menu is:", self.menuDict["current"])
             if self.menuDict["Queue"]:
                 for item in list(self.menuDict[self.menuDict["current"]]):
                     if item not in self.menuDict["Queue"]:
                         self.menuDict["Queue"].append(item)
             else:
                 self.menuDict["Queue"] = list(
-                    self.menuDict[self.menuDict["current"]])  # copy the list where the song is selected to the queue
-                print("Put Songs on the que.")
+                    self.menuDict[self.menuDict["current"]])  # copy the WHOLE ENTIRE list where the song is selected to the queue
+                print("Put Songs on the que. Here's how many:", len(self.menuDict["Queue"]) )
                 return "play"
             self.menuDict["Queue"].remove(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Remove selected
             self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Put selected at first position

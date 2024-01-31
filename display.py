@@ -37,7 +37,7 @@ class view():
             self.listView(list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
         elif menuDict["current"] == "Queue":
             self.listView(["Clear queue"] + list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
-        elif menuDict["current"] == "list":
+        elif menuDict["current"] == "list":  # This means I am looking at a list of things. Like after clicking "Artist"
             self.listView(list(map(lambda x: x[3], menuDict["list"])), menuDict["selectedItem"])
         else:
             self.listView(menuDict[menuDict["current"]], menuDict["selectedItem"])

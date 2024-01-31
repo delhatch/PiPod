@@ -21,7 +21,7 @@ menu.loadMetadata()   # This reads the info.csv file
 status = PiPod.getStatus()
 songMetadata = music.getStatus()
 
-# If you want to do a thing every periodically (ePaper?), check for this event in the pygame que.
+# If you want to do a thing periodically (ePaper?), check for this event in the pygame que.
 displayUpdate = pygame.USEREVENT + 1
 pygame.time.set_timer(displayUpdate, 200)
 

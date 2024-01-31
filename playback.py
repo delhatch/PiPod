@@ -44,6 +44,7 @@ class music():
 
     def setPlaybackMode(self, pmode):
         self.playbackMode = pmode
+        print("Playback mode is:", pmode)
         return 1
 
     def getPlaybackMode(self):
@@ -88,7 +89,8 @@ class music():
     def updateList(self, newList):
         if self.playlist[0] == ["", "", "", "", ""]:
             self.playlist.pop(0)
-            self.playlist = newList
+            print("Here in updateList. Size of newList", len(newList) )
+            self.playlist = newList[::]    # Does this copy the list over?
             self.currentSongIndex = 0
             self.play()
         else:
