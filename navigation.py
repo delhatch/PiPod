@@ -1,5 +1,8 @@
 import csv
 import random
+import string
+
+alphaList = list(string.ascii_uppercase)[:]
 
 class menu():
     menuDict = {
@@ -26,9 +29,9 @@ class menu():
 
     def down(self):
         if self.menuDict["current"] == "Queue" and self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]):
-            self.menuDict["selectedItem"] += 1
+            self.menuDict["selectedItem"] += 10
         elif self.menuDict["selectedItem"] < len(self.menuDict[self.menuDict["current"]]) - 1:
-            self.menuDict["selectedItem"] += 1
+            self.menuDict["selectedItem"] += 10
         return None
 
     def left(self):
@@ -42,8 +45,37 @@ class menu():
 
     def right(self):
         print("Right. Screen =", self.menuDict["current"])
-        if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move selected item to queue
+        if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move to next letter in the alphabet
             self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+            songInfo = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            #songTitle = songInfo[3]
+            # Get first letter of selected song.
+            firstL = songInfo[3][0]
+            # Increment to next letter.
+            if (firstL in alphaList) and (firstL != 'Z'):
+                nextL = chr(ord(firstL) + 1)
+                print("NextL =", nextL)
+                # Find index of the first song that starts with that letter.
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextSong = self.menuDict[self.menuDict["current"]][index]
+                nextSongFirstL = nextSong[3][0]
+                while( nextSongFirstL != nextL ):
+                    index += 1
+                    nextSong = self.menuDict[self.menuDict["current"]][index]
+                    nextSongFirstL = nextSong[3][0]
+                self.menuDict["selectedItem"] = index
+            else:
+                # Selected song title did not start with a letter in A-Z. So just go to first 'A' song.
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextSong = self.menuDict[self.menuDict["current"]][index]
+                nextSongFirstL = nextSong[3][0]
+                while( nextSongFirstL != 'A' ):
+                    index += 1
+                    nextSong = self.menuDict[self.menuDict["current"]][index]
+                    nextSongFirstL = nextSong[3][0]
+                self.menuDict["selectedItem"] = index
         elif self.menuDict["current"] == "Artists":  # move songs by the selected artist to queue
             for item in self.menuDict["Songs"]:
                 if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
