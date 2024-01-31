@@ -78,7 +78,8 @@ while not done:
                 if status[2] or menu.menuDict["current"] == "musicController":
                     music.playPause()
                 else:
-                    action = menu.select()
+                    currentMode = music.getPlaybackMode()
+                    action = menu.select( currentMode )
                     if action == "play":
                         music.loadList(menu.menuDict["Queue"])
                         music.play()

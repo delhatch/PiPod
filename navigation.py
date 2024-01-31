@@ -1,4 +1,5 @@
 import csv
+import random
 
 class menu():
     menuDict = {
@@ -60,7 +61,7 @@ class menu():
             self.menuDict["current"] = "Main"
         return None
 
-    def select(self):
+    def select(self, playMode):
         if self.menuDict["current"] == "Artists":
             tempList = []
             for item in self.menuDict["Songs"]:
@@ -84,18 +85,30 @@ class menu():
                 return "playAtIndex"
 
         elif self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":
-            print("Got here. Current menu is:", self.menuDict["current"])
-            if self.menuDict["Queue"]:
-                for item in list(self.menuDict[self.menuDict["current"]]):
-                    if item not in self.menuDict["Queue"]:
+            if self.menuDict["Queue"]:   # If Que is NOT empty
+                for item in list(self.menuDict[self.menuDict["current"]]): # Select a list of all the Songs
+                    if item not in self.menuDict["Queue"]:  # Push all songs not already in the que, onto the que
                         self.menuDict["Queue"].append(item)
+                # Done pushing the songs onto the que.
+                self.menuDict["Queue"].remove(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Remove selected
+                self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Put selected at first position
             else:
-                self.menuDict["Queue"] = list(
-                    self.menuDict[self.menuDict["current"]])  # copy the WHOLE ENTIRE list where the song is selected to the queue
-                print("Put Songs on the que. Here's how many:", len(self.menuDict["Queue"]) )
+                # Que IS EMPTY. If play mode is NOT Repeat1, then put every song into the play que.
+                if( playMode == "Normal" ):
+                    tempList = list(self.menuDict[self.menuDict["current"]])
+                    indexOfSelected = self.menuDict["selectedItem"]
+                    self.menuDict["Queue"] = tempList[indexOfSelected::]
+                elif( playMode == "Shuffle" ):
+                    tempList = list(self.menuDict[self.menuDict["current"]])
+                    self.menuDict["Queue"] = random.sample( tempList, len(tempList) )
+                    # Now put the selected song at the beginning of the que, so it plays first.
+                    self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+                else:
+                    # Play mode is "Repeat1" so put just that song onto the play que. After it plays, main.py will figure it out.
+                    self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+
+                #print("Put Songs on the que. Here's how many:", len(self.menuDict["Queue"]) )
                 return "play"
-            self.menuDict["Queue"].remove(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Remove selected
-            self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])  # Put selected at first position
 
         elif self.menuDict["current"] == "Settings":
             if self.menuDict["Settings"][self.menuDict["selectedItem"]] == "Update library":

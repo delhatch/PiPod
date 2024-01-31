@@ -140,7 +140,7 @@ class music():
         if self.volume <= 95:
             self.volume += 5
             self.alsa.setvolume(self.volume)
-            print(self.volume)
+            #print(self.volume)
 
     def volumeDown(self):
         if self.volume > 5:
