@@ -110,6 +110,14 @@ class menu():
             elif self.menuDict["Settings"][self.menuDict["selectedItem"]] == "Turn EQ Off":
                 return "EQOff"
 
+        elif self.menuDict["current"] == "Play Mode":
+            if self.menuDict["Play Mode"][self.menuDict["selectedItem"]] == "Normal":
+                return "Normal"
+            elif self.menuDict["Play Mode"][self.menuDict["selectedItem"]] == "Shuffle":
+                return "Shuffle"
+            elif self.menuDict["Play Mode"][self.menuDict["selectedItem"]] == "Repeat 1 Song":
+                return "Repeat1"
+
         else:
             if self.menuDict[self.menuDict["current"]]:  # check if empty
                 self.menuDict["history"].append(self.menuDict["current"])  # update history

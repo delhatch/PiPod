@@ -107,6 +107,11 @@ while not done:
                         music.enableEQ()
                     elif action == "EQOff":
                         music.disableEQ()
+                    elif (action == "Normal" or action == "Shuffle" or action == "Repeat1"):
+                        currentMode = music.getPlaybackMode()
+                        if( currentMode != action ):
+                            music.setPlaybackMode(action)
+                            # Now fill the playback que according to the new Playback Mode
 
         if event.type  == displayUpdate:
             status = PiPod.getStatus()         # Reads battery voltage, gets "status[2]" = backlight on/off

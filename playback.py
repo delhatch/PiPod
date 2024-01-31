@@ -9,6 +9,7 @@ MY_EQ = [10,8,3,0,0,0,0,0,7,10]
 eqFreqs = []
 
 class music():
+    playbackMode = ""        # mode = Normal, Shuffle, Repeat1
     UseMeta = False  # If False, use MP3 filename as the source of title/artist metadata.
                      # If True,  use the metadata inside the MP3 file.
     volume = 60
@@ -25,6 +26,7 @@ class music():
     GenreEmptyField = 0
 
     def __init__(self):
+        self.setPlaybackMode("Normal")
         self.vlcInstance = vlc.Instance('--no-video')
         self.player = self.vlcInstance.media_player_new()
         self.alsa = alsaaudio.Mixer(alsaaudio.mixers()[0])
@@ -39,6 +41,13 @@ class music():
             eqFreqs.append(vlc.libvlc_audio_equalizer_get_band_frequency(bandIndex))
         print(f'Freq: {" ".join(map(str, eqFreqs))}')
         print(f'Amp: {" ".join(map(str, eqAmps))}')
+
+    def setPlaybackMode(self, pmode):
+        self.playbackMode = pmode
+        return 1
+
+    def getPlaybackMode(self):
+        return self.playbackMode
 
     def enableEQ(self):
         if self.flagEQ:
