@@ -41,12 +41,12 @@ class menu():
         return None
 
     def right(self):
+        print("Right. Screen =", self.menuDict["current"])
         if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move selected item to queue
             self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
         elif self.menuDict["current"] == "Artists":  # move songs by the selected artist to queue
             for item in self.menuDict["Songs"]:
                 if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
-                    print("Found a match for the artist!")
                     self.menuDict["Queue"].append(item)
         elif self.menuDict["current"] == "Albums":  # move songs on the selected album to queue
             for item in self.menuDict["Songs"]:
@@ -75,6 +75,15 @@ class menu():
             tempList = []
             for item in self.menuDict["Songs"]:
                 if item[2] == self.menuDict["Albums"][self.menuDict["selectedItem"]]:
+                    tempList.append(item)
+            self.menuDict["list"] = tempList
+            self.menuDict["current"] = "list"
+            self.menuDict["selectedItem"] = 0
+
+        elif self.menuDict["current"] == "Genres":
+            tempList = []
+            for item in self.menuDict["Songs"]:
+                if item[4] == self.menuDict["Genres"][self.menuDict["selectedItem"]]:
                     tempList.append(item)
             self.menuDict["list"] = tempList
             self.menuDict["current"] = "list"
