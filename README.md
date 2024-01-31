@@ -6,7 +6,7 @@
 <p>In the original PiPod project, the user would select a song track (or artist, or album) and then push it onto the song que.</p>
 <p>The user can continue to scroll around, pushing tracks onto the que stack. The PiPod plays the tracks in the que.</p>
 <H3>New PiPod UI Scheme</H3>
-<p>This repository holds the code to implement a scheme where the user selects a song playing/selection algorithm, and the PiPod fills the que according to the user's wishes.</p>
+<p>This repository holds the code to implement a scheme where the user selects a song playing/selection <b>algorithm</b>, and the PiPod fills the que according to the user's wishes.</p>
 <ul>
   <li>For example, the user selects "songs, in random sequence" and that is how the songs are played (how the que is filled).</li>
   <li>Or, "songs, sequentially" and the que is filled with all of the song tracks in alphabetical order.</li>
