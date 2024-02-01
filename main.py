@@ -92,6 +92,7 @@ while not done:
                     elif action == "updateLibrary":
                         music.updateLibrary()  # Re-create the info.csv file
                         menu.loadMetadata()    # Re-read the info.csv file
+                        music.clearQueue()
                     elif action == "toggleSleep":
                         PiPod.toggleSleep()
                     elif action == "shutdown":
