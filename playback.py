@@ -77,9 +77,11 @@ class music():
         return status
 
     def loop(self):
-        if self.player.get_state() == vlc.State.Ended and self.currentSongIndex < len(self.playlist)-1:
-            self.currentSongIndex += 1
+        if self.player.get_state() == vlc.State.Ended:
+            if (self.currentSongIndex < len(self.playlist)-1) and (self.playbackMode != "Repeat1"):
+                self.currentSongIndex += 1
             self.play()
+        return None
 
     def loadList(self, songList):
         self.playlist = songList
