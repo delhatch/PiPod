@@ -44,6 +44,7 @@ class menu():
         return None
 
     def left(self):
+        # TODO: Show letters across top of screen.
         print("Left. Screen =", self.menuDict["current"])
         if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move to previous letter in the alphabet
             #self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
@@ -74,9 +75,10 @@ class menu():
         return "updateList"
 
     def right(self):
+        # TODO: Show letters across top of screen.
         print("Right. Screen =", self.menuDict["current"])
         if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move to next letter in the alphabet
-            self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+            #self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
             songInfo = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
             #songTitle = songInfo[3]
             # Get first letter of selected song.
