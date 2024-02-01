@@ -90,17 +90,20 @@ while not done:
                         menu.menuDict["Queue"] = []
                         music.clearQueue()
                     elif action == "updateLibrary":
-                        if music.updateLibrary():
-                            done = True
-                            pass
+                        music.updateLibrary()  # Re-create the info.csv file
+                        menu.loadMetadata()    # Re-read the info.csv file
                     elif action == "toggleSleep":
                         PiPod.toggleSleep()
                     elif action == "shutdown":
+                        view.popUp("Shutdown")
+                        view.refresh()
                         while not PiPod.shutdown():
-                            view.popUp("Shutdown")
+                            pass
                     elif action == "reboot":
+                        view.popUp("Rebooting")
+                        view.refresh()
                         while not PiPod.reboot():
-                            view.popUp("Reboot")
+                            pass
                     elif action == "playAtIndex":
                         if menu.menuDict["selectedItem"] == 0:
                             music.clearQueue()
