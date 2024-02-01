@@ -62,6 +62,8 @@ class music():
             self.flagEQ = False
             self.player.set_equalizer(None)
             # TODO: Decrease VLC pre-amp gain by the biggest boost value in MY_EQ
+            vol = self.libvlc_audio_get_volume()
+            self.libvlc_audio_set_volume(vol-10)
         else:
             pass   # Do nothing if EQ already disabled.
         return 1
