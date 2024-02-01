@@ -44,7 +44,6 @@ class music():
 
     def setPlaybackMode(self, pmode):
         self.playbackMode = pmode
-        print("Playback mode is:", pmode)
         return 1
 
     def getPlaybackMode(self):
