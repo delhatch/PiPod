@@ -2,7 +2,7 @@ import csv
 import random
 import string
 
-alphaList = list(string.ascii_uppercase)[:]
+alphaList = list(string.ascii_uppercase)
 
 class menu():
     menuDict = {
