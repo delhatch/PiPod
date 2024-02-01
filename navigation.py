@@ -224,7 +224,10 @@ class menu():
         try:
             reader = csv.reader(file)
             for row in reader:
+                # TODO: If artist name is fully capitalized, let it remain so.
                 artistClear = row[1].lstrip().lower().title()
+                if artistClear == "App":
+                    artistClear = "APP"
                 albumClear = row[2].lstrip().lower().title()
                 genreClear = row[4].lstrip().lower().title()
                 if artistClear is not "":
