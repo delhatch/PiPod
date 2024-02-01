@@ -90,6 +90,7 @@ while not done:
                         menu.menuDict["Queue"] = []
                         music.clearQueue()
                     elif action == "updateLibrary":
+                        music.player.stop
                         music.updateLibrary()  # Re-create the info.csv file
                         menu.loadMetadata()    # Re-read the info.csv file
                         music.clearQueue()
