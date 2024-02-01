@@ -149,8 +149,7 @@ class music():
     def updateLibrary(self):
         self.playPause()
         fileList = []
-        print("Updating metadata")
-        #musicPath = "/home/pi/musicPlayer/Music/"
+        #print("Updating metadata")
         musicPath = "/home/drh/Music/"
 
         for path, dirs, files in os.walk(musicPath):
@@ -235,10 +234,10 @@ class music():
             except:
                 print("Unknown write error",i)
                 try:
-                    print(song["ARTIST"])
-                    print(song["ALBUM"])
-                    print(song["TITLE"])
-                    print(song["GENRE"])
+                    print(song["ARTIST"][0])
+                    print(song["ALBUM"][0])
+                    print(song["TITLE"][0])
+                    print(song["GENRE"][0])
                 except:
                     pass
         file.close()
