@@ -12,6 +12,7 @@ music.enableEQ()
 view = display.view()
 menu = navigation.menu()
 PiPod = device.PiPod()
+clock = pygame.time.Clock()
 
 # Updating 6700 files takes 50 seconds
 #print("Starting update.")
@@ -129,5 +130,5 @@ while not done:
             view.refresh()
         # The next line gets executed every time we check for an event on the que, no matter the event.
         pass
-    pygame.time.Clock().tick(30)  # Limit the framerate to 20 FPS, to retain CPU resources
+    clock.tick(15)  # Limit the framerate to X FPS, to retain CPU resources
 
