@@ -12,7 +12,7 @@ class music():
     playbackMode = ""        # mode = Normal, Shuffle, Repeat1
     UseMeta = False  # If False, use MP3 filename as the source of title/artist metadata.
                      # If True,  use the metadata inside the MP3 file.
-    volume = 60
+    volume = 60      # alsaaudio volume
     playlist = [["", "", "", "", ""]]
     currentSongIndex = 0
     flagEQ = False
@@ -31,6 +31,7 @@ class music():
         self.player = self.vlcInstance.media_player_new()
         self.alsa = alsaaudio.Mixer(alsaaudio.mixers()[0])
         self.alsa.setvolume(self.volume)
+        volVLC = self.libvlc_audio_get_volume()  # VLC volume
         # Setup Audio Equalizer
         self.eq = vlc.AudioEqualizer()
         bandCount = vlc.libvlc_audio_equalizer_get_band_count()  # Returns: 10
@@ -51,21 +52,20 @@ class music():
 
     def enableEQ(self):
         if self.flagEQ:
-            pass   # Do nothing if EQ already enabled.
+            pass   # Do nothing if EQ was already enabled.
         else:
             self.flagEQ = True
             self.player.set_equalizer(self.eq)
+            self.libvlc_audio_set_volume(volVLC)
         return 1
 
     def disableEQ(self):
         if self.flagEQ:
             self.flagEQ = False
+            self.libvlc_audio_set_volume(volVLC - 10)
             self.player.set_equalizer(None)
-            # TODO: Decrease VLC pre-amp gain by the biggest boost value in MY_EQ
-            vol = self.libvlc_audio_get_volume()
-            self.libvlc_audio_set_volume(vol-10)
         else:
-            pass   # Do nothing if EQ already disabled.
+            pass   # Do nothing if EQ was already disabled.
         return 1
 
     def getStatus(self):
