@@ -171,11 +171,15 @@ class menu():
                     tempList = list(self.menuDict[self.menuDict["current"]])
                     indexOfSelected = self.menuDict["selectedItem"]
                     self.menuDict["Queue"] = tempList[indexOfSelected::]
+                    #print("Que was empty. Filled NORMAL. Size:", len(self.menuDict["Queue"]) )
                 elif( playMode == "Shuffle" ):
-                    tempList = list(self.menuDict[self.menuDict["current"]])
-                    self.menuDict["Queue"] = random.sample( tempList, len(tempList) )
+                    indexOfSelected = self.menuDict["selectedItem"]
+                    self.menuDict["Queue"] = self.menuDict[self.menuDict["current"]]
+                    #tempList = list(self.menuDict[self.menuDict["current"]])
+                    self.menuDict["Queue"] = random.sample( self.menuDict["Queue"], len(self.menuDict["Queue"]) )
                     # Now put the selected song at the beginning of the que, so it plays first.
                     self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
+                    #print("Que was empty. Filled SHUFFLE. Size:", len(self.menuDict["Queue"] ) )
                 else:
                     # Play mode is "Repeat1" so put just that song onto the play que. After it plays, main.py will figure it out.
                     self.menuDict["Queue"].insert(0, self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
@@ -209,7 +213,7 @@ class menu():
             if self.menuDict[self.menuDict["current"]]:  # check if empty
                 self.menuDict["history"].append(self.menuDict["current"])  # update history
                 self.menuDict["current"] = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]  # go to next menu
-                #print(self.menuDict["current"])
+                print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
 
         return None

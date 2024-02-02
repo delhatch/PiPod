@@ -14,6 +14,7 @@ class music():
                      # If True,  use the metadata inside the MP3 file.
     volume = 60      # alsaaudio volume
     playlist = [["", "", "", "", ""]]
+    volVLC = 0
     currentSongIndex = 0
     flagEQ = False
     AlbumNoKey = 0
@@ -31,7 +32,9 @@ class music():
         self.player = self.vlcInstance.media_player_new()
         self.alsa = alsaaudio.Mixer(alsaaudio.mixers()[0])
         self.alsa.setvolume(self.volume)
-        volVLC = self.libvlc_audio_get_volume()  # VLC volume
+        #self.volVLC = vlc.libvlc_audio_get_volume(self.player)  # VLC volume
+        #print("Read volume as", self.volVLC)
+        self.volVLC = 100
         # Setup Audio Equalizer
         self.eq = vlc.AudioEqualizer()
         bandCount = vlc.libvlc_audio_equalizer_get_band_count()  # Returns: 10
@@ -56,13 +59,15 @@ class music():
         else:
             self.flagEQ = True
             self.player.set_equalizer(self.eq)
-            self.libvlc_audio_set_volume(volVLC)
+            #print("Enable. Setting volume to", self.volVLC)
+            vlc.libvlc_audio_set_volume(self.player, 100)
         return 1
 
     def disableEQ(self):
         if self.flagEQ:
             self.flagEQ = False
-            self.libvlc_audio_set_volume(volVLC - 10)
+            #print("Disable. Setting volume to", self.volVLC-30)
+            vlc.libvlc_audio_set_volume(self.player, 70)
             self.player.set_equalizer(None)
         else:
             pass   # Do nothing if EQ was already disabled.
@@ -94,7 +99,7 @@ class music():
         if self.playlist[0] == ["", "", "", "", ""]:
             self.playlist.pop(0)
             print("Here in updateList. Size of newList", len(newList) )
-            self.playlist = newList[::]    # Does this copy the list over?
+            self.playlist = list(newList)
             self.currentSongIndex = 0
             self.play()
         else:
@@ -125,20 +130,27 @@ class music():
         # Add the already played songs to the front again
         self.playlist = self.playlist[:self.currentSongIndex + 1] + tempPlaylist
 
+    def unshuffle(self):
+        # Put all songs in the que into alphabetical order.
+        tempPlaylist = self.playlist[self.currentSongIndex + 1::]
+        tempPlaylist.sort()
+        # Add the already played songs to the front again
+        self.playlist = self.playlist[:self.currentSongIndex + 1] + tempPlaylist
+
     def clearQueue(self):
         self.playlist = [["", "", "", "", ""]]
         self.currentSongIndex = 0
         self.player.stop()
 
     def next(self):
-        if self.currentSongIndex < len(self.playlist)-1:
+        if (self.currentSongIndex < len(self.playlist)-1) and (self.playbackMode != "Repeat1"):
             self.currentSongIndex += 1
-            self.play()
+        self.play()
 
     def prev(self):
-        if self.currentSongIndex > 0:
+        if (self.currentSongIndex > 0) and (self.playbackMode != "Repeat1"):
             self.currentSongIndex -= 1
-            self.play()
+        self.play()
 
     def volumeUp(self):
         if self.volume <= 95:

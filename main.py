@@ -75,8 +75,8 @@ while not done:
                     music.next()
                 else:
                     action = menu.right()
-                    if action == "updateList":
-                        music.updateList(menu.menuDict["Queue"])
+                    #if action == "updateList":
+                    #    music.updateList(menu.menuDict["Queue"])
 
             elif event.key == pygame.K_RETURN:
                 if status[2] or menu.menuDict["current"] == "musicController":
@@ -122,6 +122,10 @@ while not done:
                         if( currentMode != action ):
                             music.setPlaybackMode(action)
                             # Now fill the playback que according to the new Playback Mode
+                            if action == "Shuffle":
+                                music.shuffle()
+                            if action == "Normal":
+                                music.unshuffle()
 
         if event.type  == displayUpdate:
             status = PiPod.getStatus()         # Reads battery voltage, gets "status[2]" = backlight on/off
