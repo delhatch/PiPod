@@ -99,6 +99,8 @@ class PiPod:
 
     def shutdown(self):
         os.system("sudo shutdown now")
+        while True:
+            pass
         return 1
 
     def reboot(self):
