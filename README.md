@@ -11,3 +11,5 @@
   <li>For example, the user selects "songs, in random sequence" and that is how the songs are played (how the que is filled).</li>
   <li>Or, "songs, sequentially" and the que is filled with all of the song tracks in alphabetical order.</li>
 </ul>
+<p>Another key change is that while scrolling a list of songs, the right (and left) arrow keys move to the (or previous) next song that start with the next (or previous) letter.</p>
+<p>So by clicking the right arrow key, if you are looking at songs that start with 'A', it jumps to songs that start with 'B'. Much faster scrolling through long lists!</p>
