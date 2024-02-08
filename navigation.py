@@ -228,10 +228,8 @@ class menu():
         try:
             reader = csv.reader(file)
             for row in reader:
-                # TODO: If artist name is fully capitalized, let it remain so.
-                artistClear = row[1].lstrip().lower().title()
-                if artistClear == "App":
-                    artistClear = "APP"
+                # If artist name is fully capitalized, let it remain so.
+                artistClear = row[1].lstrip()
                 albumClear = row[2].lstrip().lower().title()
                 genreClear = row[4].lstrip().lower().title()
                 if artistClear is not "":
@@ -249,7 +247,7 @@ class menu():
         finally:
             file.close()
 
-        self.menuDict["Artists"].sort()
+        self.menuDict["Artists"].sort(key=lambda x: x.lower() ) # Put "all-caps" artists in order, as if lower case.
         self.menuDict["Albums"].sort()
         self.menuDict["Genres"].sort()
         self.menuDict["Songs"] = sorted(metadata, key=lambda meta: meta[3])

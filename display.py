@@ -7,7 +7,7 @@ primaryColor = (255, 255, 255)  # global
 secondaryColor = (100, 100, 255)  # global
 # Create a pointer to the 2.2" LCD frame buffer. Note: No need to ever f.close() it.
 f=open("/dev/fb1","wb")
-noRefresh  # If True, the screen will NOT refresh.
+noRefresh = False # If True, the screen will NOT refresh.
 
 class view():
     def __init__(self):
@@ -47,18 +47,15 @@ class view():
         self.refresh()
 
     def refresh(self):
-        print(self.noRefresh)
         if self.noRefresh == False:
             f.seek(0)
             f.write(self.lcd.convert(16,0).get_buffer())
             #time.sleep(0.05)
 
     def setNoRefresh(self):
-        print(self.noRefresh)
         self.noRefresh = True
 
     def setDoRefresh(self):
-        print(self.noRefresh)
         self.noRefresh = False
 
     def clear(self):
