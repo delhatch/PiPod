@@ -16,7 +16,6 @@ clock = pygame.time.Clock()
 
 # Updating 6750 files takes 50 seconds
 #view.popUp("Updating Library")
-#view.refresh()
 #music.updateLibrary()  # This creates the info.csv file by reading every .MP3 file metadata.
 menu.loadMetadata()   # This reads the info.csv file
 status = PiPod.getStatus()
@@ -95,20 +94,19 @@ while not done:
                         menu.menuDict["Queue"] = []
                         music.clearQueue()
                     elif action == "updateLibrary":
+                        view.popUp("Updating Library")
                         music.player.stop
                         music.updateLibrary()  # Re-create the info.csv file
                         menu.loadMetadata()    # Re-read the info.csv file
-                        music.clearQueue()
+                        #music.clearQueue()    # TODO? If in, can't play a song after Library update.
                     elif action == "toggleSleep":
                         PiPod.toggleSleep()
                     elif action == "shutdown":
                         view.popUp("Shutdown")
-                        view.refresh()
                         while not PiPod.shutdown():
                             pass
                     elif action == "reboot":
                         view.popUp("Rebooting")
-                        view.refresh()
                         while not PiPod.reboot():
                             pass
                     elif action == "playAtIndex":

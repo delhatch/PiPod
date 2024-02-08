@@ -140,7 +140,7 @@ class music():
     def clearQueue(self):
         self.playlist = [["", "", "", "", ""]]
         self.currentSongIndex = 0
-        self.player.stop()
+        #self.player.stop()
 
     def next(self):
         if (self.currentSongIndex < len(self.playlist)-1) and (self.playbackMode != "Repeat1"):
