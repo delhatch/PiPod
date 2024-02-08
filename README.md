@@ -21,5 +21,5 @@
 </ul>
 <H3>Known Annoyances</H3>
 <ul>
-  <li>On power-up the que line shows "0/0" which is good. But after putting songs on que, first song shows as "0/8" Would like it to show "1/8".</li>
+  <li>On power-up the que line shows "0/0" which is good. But after putting 8 songs on que, first song shows as "0/7" (which is zero-index correct). Would like it to show "1/8". (If blindly add one, then it shows "1/1" on power-up.)</li>
 </ul>
