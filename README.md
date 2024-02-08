@@ -15,3 +15,11 @@
 <ul>
   <li>So by clicking the right arrow key, if you are looking at songs that start with 'A', it jumps to songs that start with 'B'. Much faster scrolling through long lists!</li>
 </ul>
+<H3>Known Bugs</H3>
+<ul>
+  <li>After doing a Library Update, the playback que should be cleared. But if done, then cannot play a selected song from a list.</li>
+</ul>
+<H3>Known Annoyances</H3>
+<ul>
+  <li>On power-up the que line shows "0/0" which is good. But after putting songs on que, first song shows as "0/8" Would like it to show "1/8".</li>
+</ul>
