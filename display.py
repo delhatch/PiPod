@@ -7,6 +7,7 @@ primaryColor = (255, 255, 255)  # global
 secondaryColor = (100, 100, 255)  # global
 # Create a pointer to the 2.2" LCD frame buffer. Note: No need to ever f.close() it.
 f=open("/dev/fb1","wb")
+noRefresh  # If True, the screen will NOT refresh.
 
 class view():
     def __init__(self):
@@ -21,6 +22,7 @@ class view():
         #self.dispWidth, self.dispHeight = pygame.display.get_surface().get_size()
         self.dispWidth, self.dispHeight = (320,240)
         self.font = pygame.font.Font("TerminusTTF-4.46.0.ttf", 18)
+        self.noRefresh = False
 
     def update(self, status, menuDict, songMetadata):
         if menuDict["current"] == "musicController":
@@ -42,13 +44,22 @@ class view():
         else:
             self.listView(menuDict[menuDict["current"]], menuDict["selectedItem"])
 
-        #pygame.display.update()
         self.refresh()
 
     def refresh(self):
-        f.seek(0)
-        f.write(self.lcd.convert(16,0).get_buffer())
-        time.sleep(0.05)
+        print(self.noRefresh)
+        if self.noRefresh == False:
+            f.seek(0)
+            f.write(self.lcd.convert(16,0).get_buffer())
+            #time.sleep(0.05)
+
+    def setNoRefresh(self):
+        print(self.noRefresh)
+        self.noRefresh = True
+
+    def setDoRefresh(self):
+        print(self.noRefresh)
+        self.noRefresh = False
 
     def clear(self):
         self.lcd.fill(backgroundColor)
@@ -57,7 +68,6 @@ class view():
         self.lcd.fill(backgroundColor)
         text = self.font.render(text, True, primaryColor)
         self.lcd.blit(text, ((self.dispWidth - text.get_width()) / 2, (self.dispHeight - text.get_height()) / 2))
-        #pygame.display.flip()
         self.refresh()
 
     def listView(self, menu, selectedItem):

@@ -93,9 +93,11 @@ class PiPod:
         if self.sleep == 0:
             GPIO.output(23, GPIO.LOW)
             self.sleep = 1
+            return True
         else:
             GPIO.output(23, GPIO.HIGH)
             self.sleep = 0
+            return False
 
     def shutdown(self):
         os.system("sudo shutdown now")

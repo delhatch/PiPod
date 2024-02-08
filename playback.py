@@ -43,8 +43,8 @@ class music():
             amp = eqAmps[bandIndex]
             self.eq.set_amp_at_index(amp, bandIndex)
             eqFreqs.append(vlc.libvlc_audio_equalizer_get_band_frequency(bandIndex))
-        print(f'Freq: {" ".join(map(str, eqFreqs))}')
-        print(f'Amp: {" ".join(map(str, eqAmps))}')
+        #print(f'Freq: {" ".join(map(str, eqFreqs))}')
+        #print(f'Amp: {" ".join(map(str, eqAmps))}')
 
     def setPlaybackMode(self, pmode):
         self.playbackMode = pmode

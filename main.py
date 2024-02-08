@@ -14,10 +14,10 @@ menu = navigation.menu()
 PiPod = device.PiPod()
 clock = pygame.time.Clock()
 
-# Updating 6700 files takes 50 seconds
-#print("Starting update.")
+# Updating 6750 files takes 50 seconds
+#view.popUp("Updating Library")
+#view.refresh()
 #music.updateLibrary()  # This creates the info.csv file by reading every .MP3 file metadata.
-#print("Done with update")
 menu.loadMetadata()   # This reads the info.csv file
 status = PiPod.getStatus()
 songMetadata = music.getStatus()
@@ -37,7 +37,11 @@ while not done:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 if menu.menuDict["current"] == "musicController":
-                    PiPod.toggleSleep()
+                    isAsleep = PiPod.toggleSleep()
+                    if isAsleep == True:
+                        view.setNoRefresh()
+                    else:
+                        view.setDoRefresh()
                 else:
                     action = menu.escape()
 
@@ -134,5 +138,5 @@ while not done:
             view.refresh()
         # The next line gets executed every time we check for an event on the que, no matter the event.
         pass
-    clock.tick(15)  # Limit the framerate to X FPS, to retain CPU resources
+    clock.tick(5)  # Limit the framerate to X FPS, to retain CPU resources
 
