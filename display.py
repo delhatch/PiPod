@@ -33,7 +33,9 @@ class view():
                 songMetadata["currentSong"],
                 songMetadata["currentTime"],
                 songMetadata["songLength"],
-                songMetadata["volume"]
+                songMetadata["volume"],
+                len(songMetadata["playlist"]),
+                songMetadata["index"]
             )
         elif menuDict["current"] == "Songs":
             self.listView(list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
@@ -84,12 +86,15 @@ class view():
             marginTop += 21
             index += 1
 
-    def musicController(self, selectedItem, batLevel, chargeStatus, currentSong, currentTime, songLength, volume):
+    def musicController(self, selectedItem, batLevel, chargeStatus, \
+                        currentSong, currentTime, songLength, volume, queLength, queIndex):
         self.clear()
 
         # Status bar
         volumeText = self.font.render(str(volume) + "%", True, primaryColor)
         self.lcd.blit(volumeText, (10, 1))
+        queText = self.font.render(str(queIndex) + "/" + str(queLength-1), True, primaryColor)
+        self.lcd.blit(queText, (140, 1))
 
 #        if chargeStatus:
 #            chargeText = self.font.render("Charging", True, primaryColor)

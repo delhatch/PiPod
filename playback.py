@@ -79,7 +79,8 @@ class music():
             "currentTime": self.player.get_time(),
             "currentSong": self.playlist[self.currentSongIndex],
             "volume": self.alsa.getvolume()[0],
-            "playlist": self.playlist
+            "playlist": self.playlist,
+            "index": self.currentSongIndex
         }
         return status
 
