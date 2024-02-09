@@ -46,6 +46,13 @@ class music():
         #print(f'Freq: {" ".join(map(str, eqFreqs))}')
         #print(f'Amp: {" ".join(map(str, eqAmps))}')
 
+    def backup(self, backupAmount):
+        mtime = self.player.get_time()
+        mtime -= backupAmount
+        if mtime < 0:
+            mtime = 0
+        self.player.set_time( mtime )
+
     def setPlaybackMode(self, pmode):
         self.playbackMode = pmode
         return 1

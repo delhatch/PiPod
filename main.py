@@ -62,8 +62,9 @@ while not done:
                 if status[2]:
                     music.volumeDown()
                 elif menu.menuDict["current"] == "musicController":
-                    music.shuffle()
-                    menu.menuDict["Queue"] = music.playlist
+                    music.backup( 5000 ) # Back up this many milliseconds
+                    #music.shuffle()
+                    #menu.menuDict["Queue"] = music.playlist
                 else:
                     action = menu.down()
 
