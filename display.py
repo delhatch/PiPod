@@ -85,11 +85,11 @@ class view():
         for item in menu[
                     selectedItem - 12 if selectedItem > 12 else 0:selectedItem + 12]:  # I'm sorry, if selected item is more then 4 start slicing the list
             if ( item == "Normal") and ( self.displayPlayMode == "Normal" ):
-                    item = "* Normal"
+                    item = '\u2192' + " Normal " + '\u2190'
             elif ( item == "Shuffle") and ( self.displayPlayMode == "Shuffle" ):
-                    item = "* Shuffle"
+                    item = '\u2192' + " Shuffle " + '\u2190'
             elif ( item == "Repeat 1 Song") and ( self.displayPlayMode == "Repeat1" ):
-                    item = "* Repeat 1 Song"
+                    item = '\u2192' + " Repeat 1 Song " + '\u2190'
             if index == selectedItem:
                 text = self.font.render(item, True, secondaryColor)
             else:
