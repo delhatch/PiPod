@@ -49,13 +49,11 @@ class menu():
         if self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":  # move to previous letter in the alphabet
             #self.menuDict["Queue"].append(self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]])
             songInfo = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
-            #songTitle = songInfo[3]
             # Get first letter of selected song.
             firstL = songInfo[3][0]
             # Now scan up until find a song who's first letter is smaller than this one. Save that letter.
             if (firstL in alphaList) and (firstL != 'A') and (self.menuDict["selectedItem"] != 0):
                 nextL = chr(ord(firstL) - 1)
-                #print("Want to find first song in list that starts with the letter", nextL)
                 # Find index of the first song that starts with a letter LESS THAN this one
                 index = self.menuDict["selectedItem"]
                 index -= 1
@@ -65,13 +63,53 @@ class menu():
                     index -= 1
                     nextSong = self.menuDict[self.menuDict["current"]][index]
                     nextSongFirstL = nextSong[3][0]
-                #print("Out of first loop at song",nextSong)
                 self.menuDict["selectedItem"] = index + 1
             else:
                 # Selected song title did not start with a letter in B-Z. So just go to top of list.
                 self.menuDict["selectedItem"] = 0
-        else:
-            self.escape()
+
+        elif self.menuDict["current"] == "Artists":  # Jump to next artist whos name is alphabetically greater.
+            # Get first letter of the currently selected artist's name.
+            artistName = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            firstL = artistName[0]
+            # Now scan up until find an Artist who's first letter is smaller than this one. Save that letter.
+            if (firstL in alphaList) and (firstL != 'A') and (self.menuDict["selectedItem"] != 0):
+                nextL = chr(ord(firstL) - 1)
+                # Find index of the first Artist that starts with a letter LESS THAN this one
+                index = self.menuDict["selectedItem"]
+                index -= 1
+                nextArtist = self.menuDict[self.menuDict["current"]][index]
+                nextArtistFirstL = nextArtist[0]
+                while( nextArtistFirstL >= nextL ):
+                    index -= 1
+                    nextArtist = self.menuDict[self.menuDict["current"]][index]
+                    nextArtistFirstL = nextArtist[0]
+                self.menuDict["selectedItem"] = index + 1
+            else:
+                # Selected Artist did not start with a letter in B-Z. So just go to top of list.
+                self.menuDict["selectedItem"] = 0
+
+        elif self.menuDict["current"] == "Albums":  # Jump to next Album whos name is alphabetically greater.
+            # Get first letter of the currently selected Album's name.
+            albumName = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            firstL = albumName[0]
+            # Now scan up until find an Album who's first letter is smaller than this one. Save that letter.
+            if (firstL in alphaList) and (firstL != 'A') and (self.menuDict["selectedItem"] != 0):
+                nextL = chr(ord(firstL) - 1)
+                # Find index of the first Artist that starts with a letter LESS THAN this one
+                index = self.menuDict["selectedItem"]
+                index -= 1
+                nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                nextAlbumFirstL = nextAlbum[0]
+                while( nextAlbumFirstL >= nextL ):
+                    index -= 1
+                    nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                    nextAlbumFirstL = nextAlbum[0]
+                self.menuDict["selectedItem"] = index + 1
+            else:
+                # Selected Album title did not start with a letter in B-Z. So just go to top of list.
+                self.menuDict["selectedItem"] = 0
+
         return "updateList"
 
     def right(self):
@@ -108,14 +146,62 @@ class menu():
                     nextSong = self.menuDict[self.menuDict["current"]][index]
                     nextSongFirstL = nextSong[3][0]
                 self.menuDict["selectedItem"] = index
-        elif self.menuDict["current"] == "Artists":  # move songs by the selected artist to queue
-            for item in self.menuDict["Songs"]:
-                if item[1] == self.menuDict["Artists"][self.menuDict["selectedItem"]]:
-                    self.menuDict["Queue"].append(item)
+
+        elif self.menuDict["current"] == "Artists":  # Jump to next artist whos name is alphabetically greater.
+            # Get first letter of the currently selected artist's name.
+            artistName = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            firstL = artistName[0]
+            if (firstL in alphaList) and (firstL != 'Z'):
+                nextL = chr(ord(firstL) + 1)
+                #print("NextL =", nextL)
+                # Find index of the first song that starts with that letter, or greater.
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextArtist = self.menuDict[self.menuDict["current"]][index]
+                nextArtistFirstL = nextArtist[0]
+                while( nextArtistFirstL <= firstL ):
+                    index += 1
+                    nextArtist = self.menuDict[self.menuDict["current"]][index]
+                    nextArtistFirstL = nextArtist[0]
+                self.menuDict["selectedItem"] = index
+            elif ( firstL != 'Z'):
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextArtist = self.menuDict[self.menuDict["current"]][index]
+                nextArtistFirstL = nextArtist[0]
+                while( nextArtistFirstL != 'A' ):
+                    index += 1
+                    nextArtist = self.menuDict[self.menuDict["current"]][index]
+                    nextArtistFirstL = nextArtist[0]
+                self.menuDict["selectedItem"] = index
+
         elif self.menuDict["current"] == "Albums":  # move songs on the selected album to queue
-            for item in self.menuDict["Songs"]:
-                if item[2] == self.menuDict["Albums"][self.menuDict["selectedItem"]]:
-                    self.menuDict["Queue"].append(item)
+            # Get first letter of the currently selected artist's name.
+            albumName = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]
+            firstL = albumName[0]
+            if (firstL in alphaList) and (firstL != 'Z'):
+                nextL = chr(ord(firstL) + 1)
+                #print("NextL =", nextL)
+                # Find index of the first song that starts with that letter, or greater.
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                nextAlbumFirstL = nextAlbum[0]
+                while( nextAlbumFirstL <= firstL ):
+                    index += 1
+                    nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                    nextAlbumFirstL = nextAlbum[0]
+                self.menuDict["selectedItem"] = index
+            elif ( firstL != 'Z'):
+                index = self.menuDict["selectedItem"]
+                index += 1
+                nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                nextAlbumFirstL = nextAlbum[0]
+                while( nextAlbumFirstL != 'A' ):
+                    index += 1
+                    nextAlbum = self.menuDict[self.menuDict["current"]][index]
+                    nextAlbumFirstL = nextAlbum[0]
+                self.menuDict["selectedItem"] = index
 
         return "updateList"
 

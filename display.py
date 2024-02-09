@@ -49,9 +49,9 @@ class view():
         self.refresh()
 
     def refresh(self):
-        if self.noRefresh == False:
-            f.seek(0)
-            f.write(self.lcd.convert(16,0).get_buffer())
+#        if self.noRefresh == False:
+        f.seek(0)
+        f.write(self.lcd.convert(16,0).get_buffer())
             #time.sleep(0.05)
 
     def setNoRefresh(self):
