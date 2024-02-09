@@ -120,6 +120,7 @@ while not done:
                     elif action == "EQOff":
                         music.disableEQ()
                     elif (action == "Normal" or action == "Shuffle" or action == "Repeat1"):
+                        view.setPlayMode( action ) # Used to show the current play mode on the "set mode" screen
                         currentMode = music.getPlaybackMode()
                         if( currentMode != action ):
                             music.setPlaybackMode(action)

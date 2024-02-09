@@ -284,10 +284,10 @@ class menu():
                 return "Repeat1"
 
         else:
-            if self.menuDict[self.menuDict["current"]]:  # check if empty
+            if self.menuDict[self.menuDict["current"]]:  # Does current menu screen has sub-screens? If so, do:
                 self.menuDict["history"].append(self.menuDict["current"])  # update history
                 self.menuDict["current"] = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]  # go to next menu
-                print(self.menuDict["current"])
+                #print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
 
         return None

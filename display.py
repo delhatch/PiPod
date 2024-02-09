@@ -8,6 +8,7 @@ secondaryColor = (100, 100, 255)  # global
 # Create a pointer to the 2.2" LCD frame buffer. Note: No need to ever f.close() it.
 f=open("/dev/fb1","wb")
 noRefresh = False # If True, the screen will NOT refresh.
+displayPlayMode = "Normal"
 
 class view():
     def __init__(self):
@@ -23,6 +24,11 @@ class view():
         self.dispWidth, self.dispHeight = (320,240)
         self.font = pygame.font.Font("TerminusTTF-4.46.0.ttf", 18)
         self.noRefresh = False
+        self.displayPlayMode = "Normal"
+
+    def setPlayMode(self, PlayMode):
+        self.displayPlayMode = PlayMode
+        #print("display.py now knows that the mode is", self.displayPlayMode)
 
     def update(self, status, menuDict, songMetadata):
         if menuDict["current"] == "musicController":
@@ -78,6 +84,12 @@ class view():
         index += (selectedItem - 12 if selectedItem > 12 else 0)
         for item in menu[
                     selectedItem - 12 if selectedItem > 12 else 0:selectedItem + 12]:  # I'm sorry, if selected item is more then 4 start slicing the list
+            if ( item == "Normal") and ( self.displayPlayMode == "Normal" ):
+                    item = "* Normal"
+            elif ( item == "Shuffle") and ( self.displayPlayMode == "Shuffle" ):
+                    item = "* Shuffle"
+            elif ( item == "Repeat 1 Song") and ( self.displayPlayMode == "Repeat1" ):
+                    item = "* Repeat 1 Song"
             if index == selectedItem:
                 text = self.font.render(item, True, secondaryColor)
             else:
