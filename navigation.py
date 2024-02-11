@@ -7,7 +7,7 @@ alphaList = list(string.ascii_uppercase)
 class menu():
     menuDict = {
         "selectedItem": 0,
-        "Main": ["Songs", "Albums","Artists","Genres","Play Mode","Settings"],
+        "Main": ["Songs", "Albums","Artists","Genres","Play Mode","Settings", "Queue"],
         "Songs": [],
         "Artists": [],
         "Albums": [],

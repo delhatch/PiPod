@@ -17,10 +17,8 @@ class view():
         pygame.init()
         self.lcd=pygame.Surface(surfaceSize)
         pygame.font.init()
-        #self.lcd = pygame.display.set_mode((320, 240))
         pygame.mouse.set_visible(False)
         pygame.key.set_repeat(500, 100)
-        #self.dispWidth, self.dispHeight = pygame.display.get_surface().get_size()
         self.dispWidth, self.dispHeight = (320,240)
         self.font = pygame.font.Font("TerminusTTF-4.46.0.ttf", 18)
         self.noRefresh = False
@@ -28,7 +26,6 @@ class view():
 
     def setPlayMode(self, PlayMode):
         self.displayPlayMode = PlayMode
-        #print("display.py now knows that the mode is", self.displayPlayMode)
 
     def update(self, status, menuDict, songMetadata):
         if menuDict["current"] == "musicController":
@@ -55,9 +52,9 @@ class view():
         self.refresh()
 
     def refresh(self):
-#        if self.noRefresh == False:
-        f.seek(0)
-        f.write(self.lcd.convert(16,0).get_buffer())
+        if self.noRefresh == False:
+            f.seek(0)
+            f.write(self.lcd.convert(16,0).get_buffer())
             #time.sleep(0.05)
 
     def setNoRefresh(self):
@@ -105,15 +102,9 @@ class view():
         # Status bar
         volumeText = self.font.render(str(volume) + "%", True, primaryColor)
         self.lcd.blit(volumeText, (10, 1))
+
         queText = self.font.render(str(queIndex) + "/" + str(queLength-1), True, primaryColor)
         self.lcd.blit(queText, (140, 1))
-
-#        if chargeStatus:
-#            chargeText = self.font.render("Charging", True, primaryColor)
-#            self.lcd.blit(chargeText, (self.dispWidth - chargeText.get_width() - 10, 1))
-#        else:
-#            chargeText = self.font.render(batLevel, True, primaryColor)
-#            self.lcd.blit(chargeText, (self.dispWidth - chargeText.get_width() - 10, 1))
 
         chargeText = self.font.render(batLevel, True, primaryColor)
         self.lcd.blit(chargeText, (self.dispWidth - chargeText.get_width() - 10, 1))
@@ -123,9 +114,9 @@ class view():
         # Current song information
         if currentSong:
             artist = self.font.render(currentSong[1], True, primaryColor)
-            album = self.font.render(currentSong[2], True, primaryColor)
+            #album = self.font.render(currentSong[2], True, primaryColor)
             title = self.font.render(currentSong[3], True, primaryColor)
-            genre = self.font.render(currentSong[4], True, primaryColor)
+            #genre = self.font.render(currentSong[4], True, primaryColor)
             #print(currentSong[4])
             self.lcd.blit(title, (10, 30))
             self.lcd.blit(artist, (10, 51))
@@ -150,4 +141,3 @@ class view():
 
         self.lcd.blit(currentTimeText, (10, self.dispHeight - 39))
         self.lcd.blit(songLengthText, (10 + currentTimeText.get_width(), self.dispHeight - 39))
-
