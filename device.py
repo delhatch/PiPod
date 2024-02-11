@@ -99,6 +99,9 @@ class PiPod:
             self.sleep = 0
             return False
 
+    def isAsleep(self):
+        return (self.sleep == 1)
+
     def shutdown(self):
         os.system("sudo shutdown now")
         while True:
