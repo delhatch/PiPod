@@ -210,6 +210,7 @@ class menu():
         return None
 
     def select(self, playMode):
+        print("Entering select with", self.menuDict["current"] )
         if self.menuDict["current"] == "Artists":
             tempList = []
             for item in self.menuDict["Songs"]:
@@ -237,15 +238,26 @@ class menu():
             self.menuDict["current"] = "list"
             self.menuDict["selectedItem"] = 0
 
-        elif self.menuDict["current"] == "Queue":
+        elif self.menuDict["current"] == "Queue": # Screen shows "Clear queue" + songs on the que.
+            # And, user clicked on a song. So start playing that song.
             if self.menuDict["Queue"]:
                 return "playAtIndex"
 
-        elif self.menuDict["current"] == "list" or self.menuDict["current"] == "Songs":
+        elif self.menuDict["current"] == "list": # Not 'Songs' list, not 'Queue' list
+            # Executed when a list (eg, songs by album/artist/genre) is shown and
+            #    upon a song being selected by hitting ENTER.
+            print("Selected a song on a list")
+            tempList = list(self.menuDict[self.menuDict["current"]])
+            indexOfSelected = self.menuDict["selectedItem"]
+            self.menuDict["Queue"] = tempList[indexOfSelected::]
+            return "play"
+
+        elif self.menuDict["current"] == "Songs":
+            # Screen is showing a list of all the Songs, and a song was clicked on.
             if( playMode == "Normal" ):
-                tempList = list(self.menuDict[self.menuDict["current"]])
+                tempList = list(self.menuDict[self.menuDict["current"]]) # List of all Songs, sorted alphabetically.
                 indexOfSelected = self.menuDict["selectedItem"]
-                self.menuDict["Queue"] = tempList[indexOfSelected::]
+                self.menuDict["Queue"] = tempList[indexOfSelected::] # Put all songs from there, down onto Queue.
             elif( playMode == "Shuffle" ):
                 indexOfSelected = self.menuDict["selectedItem"]
                 self.menuDict["Queue"] = self.menuDict[self.menuDict["current"]]
@@ -284,11 +296,13 @@ class menu():
                 return "Repeat1"
 
         else:
+            print("In 'else' with 'current' screen =", self.menuDict["current"] )
             if self.menuDict[self.menuDict["current"]]:  # Does current menu screen has sub-screens? If so, do:
                 self.menuDict["history"].append(self.menuDict["current"])  # update history
                 self.menuDict["current"] = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]  # go to next menu
                 #print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
+            print("Exiting 'else' with 'current' screen =", self.menuDict["current"] )
 
         return None
 

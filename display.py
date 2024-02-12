@@ -28,7 +28,16 @@ class view():
         self.displayPlayMode = PlayMode
 
     def update(self, status, menuDict, songMetadata):
+        # Note: menuDict is navigate.py's ENTIRE menuDict structure, including ["Songs"][].
         if menuDict["current"] == "musicController":
+            '''         print("---------------------")
+            print( menuDict["selectedItem"] )
+            print( songMetadata["currentSong"] )
+            print( songMetadata["currentTime"] )
+            print( songMetadata["songLength"] )
+            print( songMetadata["volume"] )
+            print( songMetadata["index"] )
+            '''
             self.musicController(
                 menuDict["selectedItem"],
                 status[1],
@@ -41,10 +50,23 @@ class view():
                 songMetadata["index"]
             )
         elif menuDict["current"] == "Songs":
-            self.listView(list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
+            # Show the song list. If a song is playing, show the list with that song centered/highlighted.
+            # Create a list of all songs, sorted alphabetically.
+            songList = list( menuDict["Songs"] )   # TODO: this copy is not needed.
+            # Get the current song in it's 5-part structure (playlist.py style thing)
+            thisSong = songMetadata["currentSong"]
+            if thisSong != ['', '', '', '', '']:  #If there is a current song to look up, do this:
+                # Now where in that list (what index) is the currently playing song?
+                thisIndex = songList.index( thisSong )
+                #print("current =", menuDict["current"] )
+                # old = self.listView( list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"] )
+                self.listView( list(map(lambda x: x[3], menuDict[menuDict["current"]])), thisIndex )
+            else:
+                self.listView( list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"] )
         elif menuDict["current"] == "Queue":
             self.listView(["Clear queue"] + list(map(lambda x: x[3], menuDict[menuDict["current"]])), menuDict["selectedItem"])
-        elif menuDict["current"] == "list":  # This means I am looking at a list of things. Like after clicking "Artist"
+        elif menuDict["current"] == "list":  # This means I am looking at a list of things.
+            # Like after clicking "Artist/Album/Genre"
             self.listView(list(map(lambda x: x[3], menuDict["list"])), menuDict["selectedItem"])
         else:
             self.listView(menuDict[menuDict["current"]], menuDict["selectedItem"])
