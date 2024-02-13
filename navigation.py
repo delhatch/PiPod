@@ -22,6 +22,9 @@ class menu():
     def __init__(self):
         pass
 
+    def setSelectedItem( self, value ):
+        self.menuDict["selectedItem"] = value
+
     def escape(self):
         self.menuDict["selectedItem"] = 0
         if self.menuDict["history"]:  # check if history is empty
@@ -303,6 +306,10 @@ class menu():
                 #print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
             print("Exiting 'else' with 'current' screen =", self.menuDict["current"] )
+            if self.menuDict["current"] == "Songs":
+                return "setSongSelectedItem"
+            else:
+                return None
 
         return None
 

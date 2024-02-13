@@ -116,6 +116,16 @@ while not done:
                             menu.menuDict["Queue"] = []
                         else:
                             music.playAtIndex(menu.menuDict["selectedItem"]-1)
+                    elif action == "setSongSelectedItem":
+                        # Change menuDict["selectedItem"] so that the currently-playing song is centered on the list.
+                        print("Now change selected item")
+                        songList = list( menu.menuDict["Songs"] )
+                        thisSong = music.playlist[music.currentSongIndex]
+                        print(thisSong)
+                        if thisSong != ['', '', '', '', '']:
+                            thisIndex = songList.index( thisSong )
+                            print(thisIndex)
+                            menu.setSelectedItem( thisIndex )
                     elif action == "EQOn":
                         music.enableEQ()
                     elif action == "EQOff":
@@ -133,9 +143,12 @@ while not done:
 
         if event.type  == displayUpdate:
             if PiPod.isAsleep() == False:
+                #print(menu.menuDict["selectedItem"] )
                 status = PiPod.getStatus()         # Reads battery voltage, gets "status[2]" = backlight on/off
                 songMetadata = music.getStatus()   # Get song length, how far in, song info, vol, playlist, index of current song
-                view.update(status, menu.menuDict, songMetadata) # Creates the screen and writes to frame buffer
+                temp = view.update(status, menu.menuDict, songMetadata) # Creates the screen and writes to frame buffer
+                #menu.setSelectedItem( temp )
+                #print("Got back", temp )
                 view.refresh()
         # The next line gets executed every time we check for an event on the que, no matter the event.
         pass
