@@ -21,7 +21,7 @@ menu.loadMetadata()   # This reads the info.csv file
 status = PiPod.getStatus()
 songMetadata = music.getStatus()
 
-# If you want to do a thing periodically (ePaper?), check for this event in the pygame que.
+# This timer is used to update the LCD screen, 5 times per second..
 displayUpdate = pygame.USEREVENT + 1
 pygame.time.set_timer(displayUpdate, 200)
 
@@ -118,13 +118,13 @@ while not done:
                             music.playAtIndex(menu.menuDict["selectedItem"]-1)
                     elif action == "setSongSelectedItem":
                         # Change menuDict["selectedItem"] so that the currently-playing song is centered on the list.
-                        print("Now change selected item")
+                        #print("Now change selected item")
                         songList = list( menu.menuDict["Songs"] )
                         thisSong = music.playlist[music.currentSongIndex]
-                        print(thisSong)
+                        #print(thisSong)
                         if thisSong != ['', '', '', '', '']:
                             thisIndex = songList.index( thisSong )
-                            print(thisIndex)
+                            #print(thisIndex)
                             menu.setSelectedItem( thisIndex )
                     elif action == "EQOn":
                         music.enableEQ()
