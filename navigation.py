@@ -308,8 +308,12 @@ class menu():
             print("Exiting 'else' with 'current' screen =", self.menuDict["current"] )
             if self.menuDict["current"] == "Songs":
                 return "setSongSelectedItem"
-            else:
-                return None
+            if self.menuDict["current"] == "Albums":
+                return "setAlbumSelectedItem"
+            if self.menuDict["current"] == "Artists":
+                return "setArtistSelectedItem"
+            if self.menuDict["current"] == "Genres":
+                return "setGenreSelectedItem"
 
         return None
 

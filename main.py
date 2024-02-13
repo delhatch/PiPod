@@ -117,13 +117,52 @@ while not done:
                         else:
                             music.playAtIndex(menu.menuDict["selectedItem"]-1)
                     elif action == "setSongSelectedItem":
-                        # Change menuDict["selectedItem"] so that the currently-playing song is centered on the list.
+                        # Change menuDict["selectedItem"] so that the currently-playing Song is centered on the list.
                         #print("Now change selected item")
                         songList = list( menu.menuDict["Songs"] )
                         thisSong = music.playlist[music.currentSongIndex]
                         #print(thisSong)
                         if thisSong != ['', '', '', '', '']:
                             thisIndex = songList.index( thisSong )
+                            #print(thisIndex)
+                            menu.setSelectedItem( thisIndex )
+                    elif action == "setAlbumSelectedItem":
+                        # Change menuDict["selectedItem"] so that the currently-playing song's Album is centered.
+                        # Find the album of the current song.
+                        thisSong = music.playlist[music.currentSongIndex]
+                        if thisSong != ['', '', '', '', '']:
+                            thisAlbum = thisSong[2]   # [2] points to the Album name for this song
+                            #print(thisSong)
+                            #print(thisAlbum)
+                            # Now get the index of that album on the list of Albums.
+                            albumList = list( menu.menuDict["Albums"] )
+                            thisIndex = albumList.index( thisAlbum )
+                            #print(thisIndex)
+                            menu.setSelectedItem( thisIndex )
+                    elif action == "setArtistSelectedItem":
+                        # Change menuDict["selectedItem"] so that the currently-playing song's Artist is centered.
+                        # Find the artist of the current song.
+                        thisSong = music.playlist[music.currentSongIndex]
+                        if thisSong != ['', '', '', '', '']:
+                            thisArtist = thisSong[1]   # [1] points to the Artist name of the song
+                            #print(thisSong)
+                            #print(thisAlbum)
+                            # Now get the index of that album on the list of Albums.
+                            artistList = list( menu.menuDict["Artists"] )
+                            thisIndex = artistList.index( thisArtist )
+                            #print(thisIndex)
+                            menu.setSelectedItem( thisIndex )
+                    elif action == "setGenreSelectedItem":
+                        # Change menuDict["selectedItem"] so that the currently-playing song's Album is centered.
+                        # Find the album of the current song.
+                        thisSong = music.playlist[music.currentSongIndex]
+                        if thisSong != ['', '', '', '', '']:
+                            thisGenre = thisSong[4]     # [4] points to the Genre of the song
+                            #print(thisSong)
+                            #print(thisAlbum)
+                            # Now get the index of that album on the list of Albums.
+                            genreList = list( menu.menuDict["Genres"] )
+                            thisIndex = genreList.index( thisGenre )
                             #print(thisIndex)
                             menu.setSelectedItem( thisIndex )
                     elif action == "EQOn":
