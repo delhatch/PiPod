@@ -18,7 +18,6 @@ class view():
         self.lcd=pygame.Surface(surfaceSize)
         pygame.font.init()
         pygame.mouse.set_visible(False)
-        pygame.key.set_repeat(500, 100)
         self.dispWidth, self.dispHeight = (320,240)
         self.font = pygame.font.Font("TerminusTTF-4.46.0.ttf", 18)
         self.noRefresh = False
@@ -51,14 +50,12 @@ class view():
         else:
             self.listView(menuDict[menuDict["current"]], menuDict["selectedItem"] )
 
-        #self.refresh()
         return None
 
     def refresh(self):
         if self.noRefresh == False:
             f.seek(0)
             f.write(self.lcd.convert(16,0).get_buffer())
-            #time.sleep(0.05)
 
     def setNoRefresh(self):
         self.noRefresh = True
@@ -106,7 +103,10 @@ class view():
         volumeText = self.font.render(str(volume) + "%", True, primaryColor)
         self.lcd.blit(volumeText, (10, 1))
 
-        queText = self.font.render(str(queIndex) + "/" + str(queLength-1), True, primaryColor)
+        if currentSong[1] == "":  # If there is no song being played, show 0/0
+            queText = self.font.render(str(queIndex) + "/" + str(queLength-1), True, primaryColor)
+        else:
+            queText = self.font.render(str(queIndex+1) + "/" + str(queLength), True, primaryColor)
         self.lcd.blit(queText, (140, 1))
 
         chargeText = self.font.render(batLevel, True, primaryColor)

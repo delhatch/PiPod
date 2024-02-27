@@ -104,11 +104,11 @@ while not done:
                         PiPod.toggleSleep()
                     elif action == "shutdown":
                         view.popUp("Shutdown")
-                        while not PiPod.shutdown():
+                        while True:
                             pass
                     elif action == "reboot":
                         view.popUp("Rebooting")
-                        while not PiPod.reboot():
+                        while True:
                             pass
                     elif action == "playAtIndex":
                         if menu.menuDict["selectedItem"] == 0:
