@@ -19,7 +19,7 @@ class view():
         pygame.font.init()
         pygame.mouse.set_visible(False)
         self.dispWidth, self.dispHeight = (320,240)
-        self.font = pygame.font.Font("TerminusTTF-4.46.0.ttf", 18)
+        self.font = pygame.font.Font("/home/drh/PiPod_Zero2W/Sofware/TerminusTTF-4.46.0.ttf", 18)
         self.noRefresh = False
         self.displayPlayMode = "Normal"
 

@@ -117,7 +117,7 @@ class music():
     def play(self):
         #print(currentSong)
         self.player.set_media(self.vlcInstance.media_new_path(self.playlist[self.currentSongIndex][0]))
-        print("About to play.")
+        print("About to play:", self.playlist[self.currentSongIndex][0] )
         self.player.play()
 
     def playAtIndex(self, index):
