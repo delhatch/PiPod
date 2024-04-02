@@ -3,9 +3,22 @@ import RPi.GPIO as GPIO
 import pygame
 import csv
 import Adafruit_ADS1x15
-import Adafruit_GPIO
+import board
+import keypad
+import digitalio
 
 Vadj = 0.00022917  #Adjusts raw ADC value = ((4.096 / 32767) / 1.2) * 2.2
+
+KEY_PINS = (
+    board.D26,
+    board.D13,
+    board.D20,
+    board.D17,
+    board.D5,
+    board.D27,
+    board.D22,
+    board.D6
+)
 
 class PiPod:
     sleep = 0
@@ -18,61 +31,35 @@ class PiPod:
         # Initialize ADC
         self.adc = Adafruit_ADS1x15.ADS1115(address=0x48,busnum=1)
 
+        self.keys = keypad.Keys( KEY_PINS, value_when_pressed = False, pull = True )
+
         # Set backlight pin as output and turn it on
-        GPIO.setwarnings(False)  # disable warning because it is known that the pin is already set as output
-        GPIO.setmode(GPIO.BCM)
+        self.pin23 = digitalio.DigitalInOut(board.D23)
+        self.pin23.direction = digitalio.Direction.OUTPUT
+        self.pin23.value = True
 
-        GPIO.setup(26,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 26 = volume up
-        def VolUp( channel ):
-            #print("Was %s" %channel)
-            volUpEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_u)
-            pygame.event.post(volUpEvent)
-        GPIO.add_event_detect(26,GPIO.RISING,callback=VolUp,bouncetime=100)
-
-        GPIO.setup(13,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 13 = volume down
-        def VolDown( channel ):
-            volDownEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_d)
-            pygame.event.post(volDownEvent)
-        GPIO.add_event_detect(13,GPIO.RISING,callback=VolDown,bouncetime=100)
-
-        GPIO.setup(20,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 20 = up arrow
-        def UpArrow( channel ):
-            upEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
-            pygame.event.post(upEvent)
-        GPIO.add_event_detect(20,GPIO.RISING,callback=UpArrow,bouncetime=100)
-
-        GPIO.setup(17,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 17 = down arrow
-        def DownArrow( channel ):
-            downEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
-            pygame.event.post(downEvent)
-        GPIO.add_event_detect(17,GPIO.RISING,callback=DownArrow,bouncetime=100)
-
-        GPIO.setup(5,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 5 = left arrow
-        def LeftArrow( channel ):
-            leftEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_LEFT)
-            pygame.event.post(leftEvent)
-        GPIO.add_event_detect(5,GPIO.RISING,callback=LeftArrow,bouncetime=100)
-
-        GPIO.setup(27,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 27 = right arrow
-        def RightArrow( channel ):
-            rightEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RIGHT)
-            pygame.event.post(rightEvent)
-        GPIO.add_event_detect(27,GPIO.RISING,callback=RightArrow,bouncetime=100)
-
-        GPIO.setup(22,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 22 = center button
-        def Return( channel ):
-            returnEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN)
-            pygame.event.post(returnEvent)
-        GPIO.add_event_detect(22,GPIO.RISING,callback=Return,bouncetime=100)
-
-        GPIO.setup(6,GPIO.IN, pull_up_down=GPIO.PUD_UP) #GPIO 6 = 'sleep' button
-        def Escape( channel ):
-            escapeEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_ESCAPE)
-            pygame.event.post(escapeEvent)
-        GPIO.add_event_detect(6,GPIO.RISING,callback=Escape,bouncetime=100)
-
-        GPIO.setup(23, GPIO.OUT)    # Backlight on/off control
-        GPIO.output(23, GPIO.HIGH)
+    def scan_switches(self):
+        event = self.keys.events.get()
+        if event:
+            if event.pressed:
+                key_number = event.key_number
+                if( key_number == 0 ):
+                    self.VolUp()
+                elif( key_number == 1 ):
+                    self.VolDown()
+                elif( key_number == 2 ):
+                    self.UpArrow()
+                elif( key_number == 3 ):
+                    self.DownArrow()
+                elif( key_number == 4 ):
+                    self.LeftArrow()
+                elif( key_number == 5 ):
+                    self.RightArrow()
+                elif( key_number == 6 ):
+                    self.Return()
+                elif( key_number == 7 ):
+                    self.Escape()
+        return
 
     def getStatus(self):
         status = [0, 0, 0]
@@ -91,11 +78,13 @@ class PiPod:
 
     def toggleSleep(self):
         if self.sleep == 0:
-            GPIO.output(23, GPIO.LOW)
+            #GPIO.output(23, GPIO.LOW)
+            self.pin23.value = False   # Turn off backlight LED
             self.sleep = 1
             return True
         else:
-            GPIO.output(23, GPIO.HIGH)
+            #GPIO.output(23, GPIO.HIGH)
+            self.pin23.value = True   # Turn on backlight LED
             self.sleep = 0
             return False
 
@@ -111,3 +100,35 @@ class PiPod:
     def reboot(self):
         os.system("sudo reboot now")
         return 1
+
+    def VolUp(self):
+        volUpEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_u)
+        pygame.event.post(volUpEvent)
+
+    def VolDown(self):
+        volDownEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_d)
+        pygame.event.post(volDownEvent)
+
+    def UpArrow(self):
+        upEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
+        pygame.event.post(upEvent)
+
+    def DownArrow(self):
+        downEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
+        pygame.event.post(downEvent)
+
+    def LeftArrow(self):
+        leftEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_LEFT)
+        pygame.event.post(leftEvent)
+
+    def RightArrow(self):
+        rightEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RIGHT)
+        pygame.event.post(rightEvent)
+
+    def Return(self):
+        returnEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN)
+        pygame.event.post(returnEvent)
+
+    def Escape(self):
+        escapeEvent = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_ESCAPE)
+        pygame.event.post(escapeEvent)

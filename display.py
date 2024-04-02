@@ -7,12 +7,14 @@ primaryColor = (255, 255, 255)  # global
 secondaryColor = (100, 100, 255)  # global
 # Create a pointer to the 2.2" LCD frame buffer. Note: No need to ever f.close() it.
 f=open("/dev/fb1","wb")
+#f=open("/dev/fb0","wb")
 noRefresh = False # If True, the screen will NOT refresh.
 displayPlayMode = "Normal"
 
 class view():
     def __init__(self):
         os.putenv('SDL_FBDEV', '/dev/fb1')  # Route the output to framebuffer 1 (TFT display)
+        #os.putenv('SDL_FBDEV', '/dev/fb0') 
         surfaceSize=(320,240)
         pygame.init()
         self.lcd=pygame.Surface(surfaceSize)

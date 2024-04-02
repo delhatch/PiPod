@@ -13,7 +13,7 @@ class menu():
         "Albums": [],
         "Genres": [],
         "Play Mode":["Normal","Shuffle","Repeat 1 Song"],
-        "Settings": ["Turn EQ On","Turn EQ Off","Sleep", "Shutdown", "Reboot", "Update library"],
+        "Settings": ["Turn EQ On","Turn EQ Off","Sleep", "Shutdown", "Reboot", "Update library", "Exit"],
         "current": "musicController",
         "Queue": [],
         "history": [],
@@ -213,7 +213,7 @@ class menu():
         return None
 
     def select(self, playMode):
-        print("Entering select with", self.menuDict["current"] )
+        #print("Entering select with", self.menuDict["current"] )
         if self.menuDict["current"] == "Artists":
             tempList = []
             for item in self.menuDict["Songs"]:
@@ -249,7 +249,7 @@ class menu():
         elif self.menuDict["current"] == "list": # Not 'Songs' list, not 'Queue' list
             # Executed when a list (eg, songs by album/artist/genre) is shown and
             #    upon a song being selected by hitting ENTER.
-            print("Selected a song on a list")
+            #print("Selected a song on a list")
             tempList = list(self.menuDict[self.menuDict["current"]])
             indexOfSelected = self.menuDict["selectedItem"]
             self.menuDict["Queue"] = tempList[indexOfSelected::]
@@ -289,6 +289,8 @@ class menu():
                 return "EQOn"
             elif self.menuDict["Settings"][self.menuDict["selectedItem"]] == "Turn EQ Off":
                 return "EQOff"
+            elif self.menuDict["Settings"][self.menuDict["selectedItem"]] == "Exit":
+                return "exit"
 
         elif self.menuDict["current"] == "Play Mode":
             if self.menuDict["Play Mode"][self.menuDict["selectedItem"]] == "Normal":
@@ -299,13 +301,13 @@ class menu():
                 return "Repeat1"
 
         else:
-            print("In 'else' with 'current' screen =", self.menuDict["current"] )
+            #print("In 'else' with 'current' screen =", self.menuDict["current"] )
             if self.menuDict[self.menuDict["current"]]:  # Does current menu screen has sub-screens? If so, do:
                 self.menuDict["history"].append(self.menuDict["current"])  # update history
                 self.menuDict["current"] = self.menuDict[self.menuDict["current"]][self.menuDict["selectedItem"]]  # go to next menu
                 #print(self.menuDict["current"])
             self.menuDict["selectedItem"] = 0
-            print("Exiting 'else' with 'current' screen =", self.menuDict["current"] )
+            #print("Exiting 'else' with 'current' screen =", self.menuDict["current"] )
             if self.menuDict["current"] == "Songs":
                 return "setSongSelectedItem"
             if self.menuDict["current"] == "Albums":

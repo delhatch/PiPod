@@ -1,10 +1,11 @@
-#!/usr/bin/python3
 import playback
 import display
 import navigation
 import device
 import pygame
 import RPi.GPIO as GPIO
+import sys
+import os
 
 done = False
 music = playback.music()
@@ -15,19 +16,21 @@ PiPod = device.PiPod()
 clock = pygame.time.Clock()
 
 # Updating 6750 files takes 50 seconds
-#view.popUp("Updating Library")
-#music.updateLibrary()  # This creates the info.csv file by reading every .MP3 file metadata.
+view.popUp("Updating Library")
+music.updateLibrary()  # This creates the info.csv file by reading every .MP3 file metadata.
 menu.loadMetadata()   # This reads the info.csv file
 status = PiPod.getStatus()
 songMetadata = music.getStatus()
 
-# This timer is used to update the LCD screen, 5 times per second..
+# This timer is used to control the speed of the loop.
+# But we want to update the LCD screen 5 times per second.
 displayUpdate = pygame.USEREVENT + 1
-pygame.time.set_timer(displayUpdate, 200)
+pygame.time.set_timer(displayUpdate, 200) # Do loop 1/50mS = 20 times per second.
 
 view.update(status, menu.menuDict, songMetadata)
 
 while not done:
+    PiPod.scan_switches()
     music.loop()    # Checks if song has ended, and starts playing next song on que (if not empty).
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -104,12 +107,16 @@ while not done:
                         PiPod.toggleSleep()
                     elif action == "shutdown":
                         view.popUp("Shutdown")
+                        os.system("sudo shutdown now")
                         while True:
                             pass
                     elif action == "reboot":
                         view.popUp("Rebooting")
+                        os.system("sudo reboot")
                         while True:
                             pass
+                    elif action == "exit":
+                        sys.exit(0)
                     elif action == "playAtIndex":
                         if menu.menuDict["selectedItem"] == 0:
                             music.clearQueue()

@@ -28,7 +28,7 @@ class music():
 
     def __init__(self):
         self.setPlaybackMode("Normal")
-        self.vlcInstance = vlc.Instance('--no-video')
+        self.vlcInstance = vlc.Instance('--no-video --quiet')
         self.player = self.vlcInstance.media_player_new()
         self.alsa = alsaaudio.Mixer(alsaaudio.mixers()[0])
         self.alsa.setvolume(self.volume)
@@ -106,7 +106,7 @@ class music():
     def updateList(self, newList):
         if self.playlist[0] == ["", "", "", "", ""]:
             self.playlist.pop(0)
-            print("Here in updateList. Size of newList", len(newList) )
+            #print("Here in updateList. Size of newList", len(newList) )
             self.playlist = list(newList)
             self.currentSongIndex = 0
             self.play()
@@ -117,7 +117,7 @@ class music():
     def play(self):
         #print(currentSong)
         self.player.set_media(self.vlcInstance.media_new_path(self.playlist[self.currentSongIndex][0]))
-        print("About to play:", self.playlist[self.currentSongIndex][0] )
+        #print("About to play:", self.playlist[self.currentSongIndex][0] )
         self.player.play()
 
     def playAtIndex(self, index):
@@ -223,11 +223,13 @@ class music():
                 try:
                     title = i.split("- ")
                 except:
-                    print("Error splitting!",i)
+                    #print("Error splitting!",i)
+                    pass
                 try:
                     newtitle = title[1].split(".")
                 except:
-                    print("Error splitting",i)
+                    #print("Error splitting",i)
+                    pass
                 stringTitle = newtitle[0].lstrip()
                 song['TITLE'] = [stringTitle]
 
@@ -257,23 +259,26 @@ class music():
             try:
                 writer.writerow((i, song["ARTIST"][0], song["ALBUM"][0], song["TITLE"][0], song["GENRE"][0]))
             except:
-                print("Unknown write error",i)
+                #print("Unknown write error",i)
+                pass
                 try:
-                    print(song["ARTIST"][0])
-                    print(song["ALBUM"][0])
-                    print(song["TITLE"][0])
-                    print(song["GENRE"][0])
+                    pass
+                    #print(song["ARTIST"][0])
+                    #print(song["ALBUM"][0])
+                    #print(song["TITLE"][0])
+                    #print(song["GENRE"][0])
                 except:
                     pass
         file.close()
-        print("Done writing metadata file.")
-        print("AlbumNoKey = ", self.AlbumNoKey)
-        print("AlbumEmptyField = ", self.AlbumEmptyField)
-        print("GenreNoKey = ", self.GenreNoKey)
-        print("GenreEmptyField = ", self.GenreEmptyField)
+        #print("Done writing metadata file.")
+        #print("AlbumNoKey = ", self.AlbumNoKey)
+        #print("AlbumEmptyField = ", self.AlbumEmptyField)
+        #print("GenreNoKey = ", self.GenreNoKey)
+        #print("GenreEmptyField = ", self.GenreEmptyField)
         if self.UseMeta:
-            print("ArtistNoKey = ", self.ArtistNoKey)
-            print("ArtistEmptyField = ", self.ArtistEmptyField)
-            print("TitleNoKey = ", self.TitleNoKey)
-            print("TitleEmptyField = ", self.TitleEmptyField)
+            #print("ArtistNoKey = ", self.ArtistNoKey)
+            #print("ArtistEmptyField = ", self.ArtistEmptyField)
+            #print("TitleNoKey = ", self.TitleNoKey)
+            #print("TitleEmptyField = ", self.TitleEmptyField)
+            pass
         return 1
