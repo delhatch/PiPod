@@ -15,6 +15,8 @@
 <ul>
   <li>So by clicking the right arrow key, if you are looking at songs that start with 'A', it jumps to songs that start with 'B'. Much faster scrolling through long lists!</li>
 </ul>
+<H3>Minor Structural Change</H3>
+<li>For handling button presses, this version changes from the Adafruit GPIO library to the Adafruit Blinka library. See device.py</li>
 <H3>Known Bugs</H3>
 <ul>
   <li>After doing a Library Update, the playback que should be cleared. But if done, then cannot play a selected song from a list.</li>
